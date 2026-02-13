@@ -24,8 +24,13 @@ def health_check():
 
 @app.post('/api/v1/analysis/summarize')
 def summarize_document(file: UploadFile = File(...)):
-    # PLACEHOLDER FLOW: currently reads upload text directly and calls mock-capable LLM helpers.
-    # CHANGE THIS LATER: if you add persistent storage/queues, route orchestration will likely change.
+    # WHAT THIS ENDPOINT DOES NOW:
+    # 1) Reads text from uploaded file.
+    # 2) Generates summary.
+    # 3) Generates next steps/questions from that summary.
+    #
+    # WHEN TO CHANGE THIS:
+    # - Only if you decide to add a DB, queue, background jobs, or multi-step workflow tracking.
     document_text = extract_document_text(file)
     summary = generate_summary(file.filename, document_text)
     next_steps = generate_attorney_next_steps(file.filename, summary)
@@ -34,7 +39,11 @@ def summarize_document(file: UploadFile = File(...)):
 
 @app.post('/api/v1/analysis/related-cases')
 def related_cases(payload: RelatedCasesRequest):
-    # PLACEHOLDER FLOW: returns mocked cases when Courtbase creds are missing.
-    # CHANGE THIS LATER: add pagination/filter args once using real Courtbase responses.
+    # WHAT THIS ENDPOINT DOES NOW:
+    # - Calls Courtbase helper and returns mapped case data.
+    # - If Courtbase is not configured, helper returns mock data.
+    #
+    # WHEN TO CHANGE THIS:
+    # - Add extra request fields (jurisdiction/date/topic filters) once needed.
     cases = get_related_cases(payload.file_name, payload.summary)
     return {'cases': cases}

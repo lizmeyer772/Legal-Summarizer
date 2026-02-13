@@ -4,13 +4,16 @@ from config import COURTBASE_API_KEY, COURTBASE_BASE_URL
 
 
 def get_related_cases(file_name: str, summary: str) -> list[dict]:
-    # PLACEHOLDER FLOW: tries real Courtbase call, otherwise returns mock cases below.
+    # FLOW TODAY:
+    # 1) Try Courtbase API call.
+    # 2) If call returns no data, return mock cases for UI testing.
     raw_cases = fetch_courtbase_related_cases(file_name=file_name, summary=summary)
 
     if raw_cases:
         return [normalize_case(item, f'case-{idx + 1}') for idx, item in enumerate(raw_cases)]
 
-    # PLACEHOLDER DATA: static examples for UI development only.
+    # PLACEHOLDER DATA:
+    # - Delete/replace this list after real Courtbase integration is working.
     return [
         {
             'id': 'case-1',
@@ -28,7 +31,11 @@ def get_related_cases(file_name: str, summary: str) -> list[dict]:
 
 
 def normalize_case(item: dict, default_id: str) -> dict:
-    # CHANGE THIS: align keys exactly to real Courtbase response once contract is finalized.
+    # EXACTLY WHAT TO CHANGE WHEN YOU HAVE REAL COURTBASE RESPONSES:
+    # 1) Print one real API response item.
+    # 2) Update key mapping below so each field maps correctly.
+    # 3) Keep output keys exactly as: id, case_name, citation, reason
+    #    because frontend expects these keys.
     return {
         'id': str(item.get('id', default_id)),
         'case_name': str(item.get('case_name') or item.get('caseName') or 'Unknown Case'),
@@ -38,10 +45,16 @@ def normalize_case(item: dict, default_id: str) -> dict:
 
 
 def fetch_courtbase_related_cases(file_name: str, summary: str) -> list[dict]:
-    # PLACEHOLDER API CONTRACT: endpoint/path/payload are assumptions.
-    # CHANGE THIS: update endpoint, auth style, and payload to real Courtbase docs.
+    # PLACEHOLDER CONTRACT (likely needs changes):
+    # - URL path `/related-cases` is assumed.
+    # - Payload keys `fileName` and `summary` are assumed.
+    #
+    # EXACTLY WHAT TO CHANGE USING COURTBASE DOCS:
+    # 1) Replace URL path if docs specify a different endpoint.
+    # 2) Replace payload keys/shape with the exact required request body.
+    # 3) Replace auth header if Courtbase requires a different format.
     if not COURTBASE_API_KEY:
-        # PLACEHOLDER BEHAVIOR: missing key means caller receives mock cases.
+        # No key set -> caller falls back to mock cases.
         return []
 
     url = f'{COURTBASE_BASE_URL}/related-cases'
@@ -57,7 +70,8 @@ def fetch_courtbase_related_cases(file_name: str, summary: str) -> list[dict]:
             response.raise_for_status()
             data = response.json()
     except Exception:
-        # PLACEHOLDER BEHAVIOR: swallow errors and return empty for mock fallback.
+        # Current behavior: fail quietly and let caller return mock cases.
+        # Recommended later: log response error details for debugging.
         return []
 
     if isinstance(data, list):
