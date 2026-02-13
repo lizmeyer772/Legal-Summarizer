@@ -2,7 +2,7 @@ import httpx
 
 from config import HF_API_TOKEN, HF_INFERENCE_BASE_URL, HF_MODEL_ID
 
-
+# add chunking, how?
 def generate_summary(file_name: str, document_text: str) -> str:
     # PLACEHOLDER PROMPT:
     # - This prompt is generic and may not produce consistent legal output quality.
@@ -24,12 +24,13 @@ def generate_summary(file_name: str, document_text: str) -> str:
     # PLACEHOLDER FALLBACK:
     # - You see this text when HF token/model is missing OR HF request fails.
     # - Once your API call is stable, you can replace this with error raising/logging.
+    # maybe change this
     return (
         f'Mock summary for "{file_name}": This legal document appears to define key duties, '
         'timelines, and potential legal exposure requiring attorney review.'
     )
 
-
+# combo of string and text?
 def generate_attorney_next_steps(file_name: str, summary: str) -> str:
     # PLACEHOLDER PROMPT:
     # - This currently returns free-form text.

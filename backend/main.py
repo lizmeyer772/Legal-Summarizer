@@ -1,13 +1,15 @@
+# needed libraries
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-
 from courtbase import get_related_cases
 from document_processing import extract_document_text
 from llm import generate_attorney_next_steps, generate_summary
 from schemas import RelatedCasesRequest
 
+# do i need a version?
 app = FastAPI(title='Legal Summarizer API', version='0.1.0')
 
+# ask if i need this
 app.add_middleware(
     CORSMiddleware,
     allow_origins=['http://localhost:5173', 'http://127.0.0.1:5173'],
@@ -16,13 +18,15 @@ app.add_middleware(
     allow_headers=['*'],
 )
 
-
+# ask if i need this
 @app.get('/health')
 def health_check():
     return {'status': 'ok'}
 
-
+# ask if i need this, like isnt this a url?
 @app.post('/api/v1/analysis/summarize')
+
+# so clarify if anything should change in the argument
 def summarize_document(file: UploadFile = File(...)):
     # WHAT THIS ENDPOINT DOES NOW:
     # 1) Reads text from uploaded file.

@@ -12,7 +12,7 @@ def get_related_cases(file_name: str, summary: str) -> list[dict]:
     if raw_cases:
         return [normalize_case(item, f'case-{idx + 1}') for idx, item in enumerate(raw_cases)]
 
-    # PLACEHOLDER DATA:
+    # PLACEHOLDER DATA: idk what this means
     # - Delete/replace this list after real Courtbase integration is working.
     return [
         {
