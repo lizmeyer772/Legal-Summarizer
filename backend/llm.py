@@ -1,0 +1,70 @@
+import httpx
+
+from config import HF_API_TOKEN, HF_INFERENCE_BASE_URL, HF_MODEL_ID
+
+
+async def generate_summary(file_name: str, document_text: str) -> str:
+    prompt = (
+        f'You are a legal assistant. Summarize the following document named {file_name}.\\n\\n'
+        'Focus on obligations, deadlines, and legal risk.\\n\\n'
+        f'DOCUMENT:\\n{document_text[:12000]}'
+    )
+
+    llm_text = await call_huggingface(prompt)
+    if llm_text:
+        return llm_text
+
+    return (
+        f'Mock summary for "{file_name}": This legal document appears to define key duties, '
+        'timelines, and potential legal exposure requiring attorney review.'
+    )
+
+
+async def generate_attorney_next_steps(file_name: str, summary: str) -> str:
+    prompt = (
+        f'You are supporting an attorney reviewing {file_name}.\\n\\n'
+        'Given this summary, provide next legal steps and clarifying questions.\\n\\n'
+        f'SUMMARY:\\n{summary}'
+    )
+
+    llm_text = await call_huggingface(prompt)
+    if llm_text:
+        return llm_text
+
+    return (
+        'Mock next steps: confirm filing deadlines, verify governing law and venue, '
+        'and prepare follow-up questions for the client on disputed obligations.'
+    )
+
+
+async def call_huggingface(prompt: str) -> str:
+    # TODO: Replace fallback logic with strict parsing of your chosen model response format.
+    if not HF_API_TOKEN:
+        return ''
+
+    url = f'{HF_INFERENCE_BASE_URL}/{HF_MODEL_ID}'
+    headers = {
+        'Authorization': f'Bearer {HF_API_TOKEN}',
+        'Content-Type': 'application/json',
+    }
+    payload = {
+        'inputs': prompt,
+        'parameters': {
+            'max_new_tokens': 500,
+            'temperature': 0.2,
+        },
+    }
+
+    try:
+        async with httpx.AsyncClient(timeout=45.0) as client:
+            response = await client.post(url, headers=headers, json=payload)
+            response.raise_for_status()
+            data = response.json()
+    except Exception:
+        return ''
+
+    if isinstance(data, list) and data and isinstance(data[0], dict):
+        text = data[0].get('generated_text', '')
+        return text.strip() if isinstance(text, str) else ''
+
+    return ''
