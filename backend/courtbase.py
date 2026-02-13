@@ -3,12 +3,14 @@ import httpx
 from config import COURTBASE_API_KEY, COURTBASE_BASE_URL
 
 
-async def get_related_cases(file_name: str, summary: str) -> list[dict]:
-    raw_cases = await fetch_courtbase_related_cases(file_name=file_name, summary=summary)
+def get_related_cases(file_name: str, summary: str) -> list[dict]:
+    # PLACEHOLDER FLOW: tries real Courtbase call, otherwise returns mock cases below.
+    raw_cases = fetch_courtbase_related_cases(file_name=file_name, summary=summary)
 
     if raw_cases:
         return [normalize_case(item, f'case-{idx + 1}') for idx, item in enumerate(raw_cases)]
 
+    # PLACEHOLDER DATA: static examples for UI development only.
     return [
         {
             'id': 'case-1',
@@ -26,6 +28,7 @@ async def get_related_cases(file_name: str, summary: str) -> list[dict]:
 
 
 def normalize_case(item: dict, default_id: str) -> dict:
+    # CHANGE THIS: align keys exactly to real Courtbase response once contract is finalized.
     return {
         'id': str(item.get('id', default_id)),
         'case_name': str(item.get('case_name') or item.get('caseName') or 'Unknown Case'),
@@ -34,9 +37,11 @@ def normalize_case(item: dict, default_id: str) -> dict:
     }
 
 
-async def fetch_courtbase_related_cases(file_name: str, summary: str) -> list[dict]:
-    # TODO: Replace endpoint path and payload fields with the real Courtbase API contract.
+def fetch_courtbase_related_cases(file_name: str, summary: str) -> list[dict]:
+    # PLACEHOLDER API CONTRACT: endpoint/path/payload are assumptions.
+    # CHANGE THIS: update endpoint, auth style, and payload to real Courtbase docs.
     if not COURTBASE_API_KEY:
+        # PLACEHOLDER BEHAVIOR: missing key means caller receives mock cases.
         return []
 
     url = f'{COURTBASE_BASE_URL}/related-cases'
@@ -47,11 +52,12 @@ async def fetch_courtbase_related_cases(file_name: str, summary: str) -> list[di
     payload = {'fileName': file_name, 'summary': summary}
 
     try:
-        async with httpx.AsyncClient(timeout=30.0) as client:
-            response = await client.post(url, headers=headers, json=payload)
+        with httpx.Client(timeout=30.0) as client:
+            response = client.post(url, headers=headers, json=payload)
             response.raise_for_status()
             data = response.json()
     except Exception:
+        # PLACEHOLDER BEHAVIOR: swallow errors and return empty for mock fallback.
         return []
 
     if isinstance(data, list):

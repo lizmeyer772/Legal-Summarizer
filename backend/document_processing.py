@@ -1,10 +1,11 @@
 from fastapi import UploadFile
 
 
-async def extract_document_text(uploaded_file: UploadFile) -> str:
-    # TODO: Replace with robust parsing for PDF/DOCX and OCR if needed.
-    content = await uploaded_file.read()
-    await uploaded_file.seek(0)
+def extract_document_text(uploaded_file: UploadFile) -> str:
+    # PLACEHOLDER: simple byte decode only. This does NOT properly parse PDF/DOCX structure.
+    # CHANGE THIS: use a real parser (e.g., pypdf/docx/textract) and optional OCR for scanned files.
+    content = uploaded_file.file.read()
+    uploaded_file.file.seek(0)
 
     if not content:
         return ''

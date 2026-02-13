@@ -23,14 +23,18 @@ def health_check():
 
 
 @app.post('/api/v1/analysis/summarize')
-async def summarize_document(file: UploadFile = File(...)):
-    document_text = await extract_document_text(file)
-    summary = await generate_summary(file.filename, document_text)
-    next_steps = await generate_attorney_next_steps(file.filename, summary)
+def summarize_document(file: UploadFile = File(...)):
+    # PLACEHOLDER FLOW: currently reads upload text directly and calls mock-capable LLM helpers.
+    # CHANGE THIS LATER: if you add persistent storage/queues, route orchestration will likely change.
+    document_text = extract_document_text(file)
+    summary = generate_summary(file.filename, document_text)
+    next_steps = generate_attorney_next_steps(file.filename, summary)
     return {'summary': summary, 'next_steps': next_steps}
 
 
 @app.post('/api/v1/analysis/related-cases')
-async def related_cases(payload: RelatedCasesRequest):
-    cases = await get_related_cases(payload.file_name, payload.summary)
+def related_cases(payload: RelatedCasesRequest):
+    # PLACEHOLDER FLOW: returns mocked cases when Courtbase creds are missing.
+    # CHANGE THIS LATER: add pagination/filter args once using real Courtbase responses.
+    cases = get_related_cases(payload.file_name, payload.summary)
     return {'cases': cases}
