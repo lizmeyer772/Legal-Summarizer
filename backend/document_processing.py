@@ -7,7 +7,7 @@ from pypdf import PdfReader
 
 
 def extract_document_text(uploaded_file: UploadFile) -> str:
-    # Supports .txt, .pdf, and .docx. Returns empty string on parse failure.
+    # supports .txt, .pdf, and .docx
     content = uploaded_file.file.read()
     uploaded_file.file.seek(0)
 
@@ -23,7 +23,7 @@ def extract_document_text(uploaded_file: UploadFile) -> str:
     if extension == '.txt':
         return _decode_bytes(content)
 
-    # Fallback for unknown extensions: attempt plain-text decode.
+    # fallback for unknown extensions: attempt plain-text decode
     return _decode_bytes(content)
 
 
