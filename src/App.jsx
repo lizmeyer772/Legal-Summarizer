@@ -79,7 +79,7 @@ export default function App() {
             {isSummarizing ? (
               <p>Generating summary...</p>
             ) : summary ? (
-              <p>{summary}</p>
+              <StructuredOutput text={summary} />
             ) : (
               <p className="placeholder">Placeholder: summary from LLM will be shown here.</p>
             )}
@@ -90,7 +90,7 @@ export default function App() {
             {isSummarizing ? (
               <p>Generating next steps...</p>
             ) : nextSteps ? (
-              <p>{nextSteps}</p>
+              <StructuredOutput text={nextSteps} />
             ) : (
               <p className="placeholder">Placeholder: next steps and follow-up questions will be shown here.</p>
             )}
@@ -122,6 +122,83 @@ export default function App() {
       {error ? <p className="error-message">{error}</p> : null}
     </div>
   );
+}
+
+function StructuredOutput({ text }) {
+  const sections = parseSections(text);
+
+  if (sections.length === 0) {
+    return <p className="llm-raw">{text}</p>;
+  }
+
+  return (
+    <div className="llm-structured">
+      {sections.map((section, index) => (
+        <section key={`${section.title}-${index}`} className="llm-section">
+          <h4>{section.title}</h4>
+
+          {section.paragraphs.map((paragraph, paragraphIndex) => (
+            <p key={`${section.title}-p-${paragraphIndex}`} className="llm-paragraph">
+              {paragraph}
+            </p>
+          ))}
+
+          {section.bullets.length > 0 ? (
+            <ul>
+              {section.bullets.map((bullet, bulletIndex) => (
+                <li key={`${section.title}-b-${bulletIndex}`}>{bullet}</li>
+              ))}
+            </ul>
+          ) : null}
+        </section>
+      ))}
+    </div>
+  );
+}
+
+function parseSections(text) {
+  const lines = text
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  const sections = [];
+  let currentSection = null;
+
+  for (const line of lines) {
+    if (line.startsWith('## ')) {
+      if (currentSection) {
+        sections.push(currentSection);
+      }
+
+      currentSection = {
+        title: line.replace(/^##\s+/, ''),
+        paragraphs: [],
+        bullets: []
+      };
+      continue;
+    }
+
+    if (!currentSection) {
+      currentSection = {
+        title: 'Summary',
+        paragraphs: [],
+        bullets: []
+      };
+    }
+
+    if (/^[-*]\s+/.test(line)) {
+      currentSection.bullets.push(line.replace(/^[-*]\s+/, ''));
+    } else {
+      currentSection.paragraphs.push(line);
+    }
+  }
+
+  if (currentSection) {
+    sections.push(currentSection);
+  }
+
+  return sections;
 }
 
 async function summarizeDocument(file) {

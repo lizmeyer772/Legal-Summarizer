@@ -6,7 +6,7 @@ from document_processing import extract_document_text
 from llm import generate_attorney_next_steps, generate_summary
 from schemas import RelatedCasesRequest
 
-# do i need a version?
+
 app = FastAPI(title='Legal Summarizer API', version='0.1.0')
 
 
