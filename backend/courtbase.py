@@ -1,3 +1,5 @@
+# WORK IN PROGRESS, WILL BE FINISHED LATER
+
 import httpx
 
 from config import COURTBASE_API_KEY, COURTBASE_BASE_URL

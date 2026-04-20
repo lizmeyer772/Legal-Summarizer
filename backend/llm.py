@@ -58,11 +58,44 @@ DOCUMENT:
 
 def generate_attorney_next_steps(file_name: str, summary: str) -> str:
     # need to update these prompts
-    prompt = (
-        f'You are supporting an attorney reviewing {file_name}.\\n\\n'
-        'Given this summary, provide next legal steps and clarifying questions.\\n\\n'
-        f'SUMMARY:\\n{summary}'
-    )
+    prompt = f"""
+You are an attorney assistant. Review the legal document summary for "{file_name}".
+
+Return ONLY Markdown in this exact structure and order.
+Do not add any intro or outro text.
+Use short bullet points only, no long paragraphs.
+
+## Immediate Next Steps
+- Most urgent attorney actions to take now.
+- 3 to 5 bullets, each <= 20 words.
+
+## Filing / Procedure Steps
+- Procedural actions, filings, service, venue, or jurisdiction issues to confirm.
+- 3 to 5 bullets, each <= 20 words.
+- If not applicable, include: - Not clear from provided summary.
+
+## Evidence / Document Requests
+- Documents, records, or factual support counsel should obtain.
+- 3 to 6 bullets, each <= 20 words.
+
+## Client Questions
+- Clarifying questions counsel should ask the client next.
+- 5 to 8 bullets, each <= 20 words.
+
+## Risk Monitoring
+- Deadlines, exposure, compliance issues, or facts requiring close follow-up.
+- 3 to 5 bullets, each <= 20 words.
+
+Rules:
+- Be factual and neutral.
+- Do not invent facts.
+- Base all recommendations only on the provided summary.
+- If uncertain, say "Unclear from provided summary."
+- Preserve important names, dates, dollar amounts, and citations exactly as written.
+
+SUMMARY:
+{summary[:8000]}
+""".strip()
 
     llm_text = call_huggingface(prompt)
     if llm_text:
