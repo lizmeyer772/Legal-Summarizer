@@ -6,31 +6,28 @@ The purpose of this dataset is to measure output quality over time, not to power
 
 ## Suggested Workflow
 
-1. Place a source document into `evals/cases/<case-id>/source/`.
-2. Add a rubric file in `evals/cases/<case-id>/rubric.json`.
-3. Run the app against the source document.
-4. Save the generated output in the case folder if you want to keep it.
-5. Compare the generated summary and next steps against the rubric.
+1. Place a source document directly into `evals/cases/<case-id>/`.
+2. Run the app against the source document.
+3. Save the generated output in `evals/cases/<case-id>/generated-output.md`.
+4. Have the attorney fill out `evals/Attorney-Review-Worksheet.docx`.
+5. Compare the generated output against the attorney's notes.
 
 ## Folder Layout
 
 `evals/cases/`
 Each case gets its own folder.
 
-`evals/templates/`
-Reusable rubric templates and examples.
-
-`evals/results/`
-Optional place to save generated outputs or scored evaluations.
+`evals/Attorney-Review-Worksheet.docx`
+Single worksheet for attorney review notes.
 
 ## Do I literally put documents here?
 
-Yes. For evaluation, you can literally place your test documents in `evals/cases/<case-id>/source/`.
+Yes. For evaluation, you can literally place your test documents in `evals/cases/<case-id>/`.
 
 Examples:
-- `evals/cases/contract-notice-dispute/source/notice_agreement.pdf`
-- `evals/cases/motion-to-dismiss/source/motion_to_dismiss.docx`
-- `evals/cases/complaint-employment/source/complaint.txt`
+- `evals/cases/contract-notice-dispute/notice_agreement.pdf`
+- `evals/cases/motion-to-dismiss/motion_to_dismiss.docx`
+- `evals/cases/complaint-employment/complaint.txt`
 
 If documents contain sensitive or confidential data, do one of these instead:
 - use redacted copies
