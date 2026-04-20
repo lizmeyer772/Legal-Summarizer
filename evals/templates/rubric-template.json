@@ -1,0 +1,95 @@
+{
+  "case_id": "replace-with-case-id",
+  "title": "Replace with human-readable title",
+  "document_type": "contract | complaint | motion | order | letter | other",
+  "source_files": [
+    "source/replace-with-file-name.pdf"
+  ],
+  "notes": "Short description of why this case is included in the eval set.",
+  "expected_summary": {
+    "executive_summary": [
+      "Key fact or takeaway expected in the executive summary."
+    ],
+    "parties_and_posture": {
+      "plaintiffs": [
+        "Expected plaintiff name"
+      ],
+      "defendants": [
+        "Expected defendant name"
+      ],
+      "procedural_posture": [
+        "Expected procedural posture detail"
+      ]
+    },
+    "key_obligations": [
+      "Important duty, obligation, or legal requirement that should appear."
+    ],
+    "deadlines_and_time_sensitive_items": [
+      "Important date, deadline, notice period, or timing issue."
+    ],
+    "legal_risks_and_exposure": [
+      "Expected claim, defense, liability issue, or compliance risk."
+    ],
+    "missing_facts_or_clarifying_questions": [
+      "A reasonable follow-up question the model should surface."
+    ]
+  },
+  "expected_next_steps": {
+    "immediate_next_steps": [
+      "Urgent attorney action expected from the summary."
+    ],
+    "filing_or_procedure_steps": [
+      "Procedural follow-up the model should recommend."
+    ],
+    "evidence_or_document_requests": [
+      "Document or evidence request the model should identify."
+    ],
+    "client_questions": [
+      "Question the attorney should ask the client."
+    ],
+    "risk_monitoring": [
+      "Deadline or exposure item that should be monitored."
+    ]
+  },
+  "must_preserve_exactly": [
+    "Party names",
+    "Dates",
+    "Dollar amounts",
+    "Citations"
+  ],
+  "must_not_do": [
+    "Invent parties not present in the source",
+    "Invent deadlines not present in the source",
+    "State speculation as fact"
+  ],
+  "scoring": {
+    "factual_accuracy": {
+      "weight": 5,
+      "description": "Facts match the source document."
+    },
+    "coverage": {
+      "weight": 4,
+      "description": "Important obligations, deadlines, and risks are included."
+    },
+    "hallucination_control": {
+      "weight": 5,
+      "description": "The output avoids invented facts and overreach."
+    },
+    "format_compliance": {
+      "weight": 3,
+      "description": "The output follows the requested section structure and bullet constraints."
+    },
+    "attorney_usefulness": {
+      "weight": 4,
+      "description": "The output is practically helpful for legal review."
+    }
+  },
+  "pass_criteria": {
+    "minimum_total_score": 17,
+    "hard_requirements": [
+      "No material hallucinations",
+      "Correct party identification",
+      "No missed critical deadline"
+    ]
+  }
+}
