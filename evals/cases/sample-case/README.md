@@ -10,5 +10,5 @@ Put the original file you want to test here.
 `rubric.json`
 Copy the template from `evals/templates/rubric-template.json` and fill it in.
 
-`references/`
-Optional reference summaries or attorney-reviewed expected outputs.
+`generated-output.md`
+Optional place to paste the summary and next steps produced by the app.

@@ -1,11 +1,9 @@
 {
   "case_id": "CivilRightsADA",
   "title": "CivilRightsADA",
-  "document_type": "other",
-  "source_files": [
-    "source/CivilRightsADA.pdf"
-  ],
-  "notes": "Fill in the expected facts and scoring guidance after reviewing the source document.",
+  "document_type": "complaint",
+  "source_files": ["source/CivilRightsADA.pdf"],
+  "notes": "Example of an ADA case (civil rights violation)",
   "expected_summary": {
     "executive_summary": [],
     "parties_and_posture": {

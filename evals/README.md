@@ -8,8 +8,8 @@ The purpose of this dataset is to measure output quality over time, not to power
 
 1. Place a source document into `evals/cases/<case-id>/source/`.
 2. Add a rubric file in `evals/cases/<case-id>/rubric.json`.
-3. Optionally save strong reference outputs in `evals/cases/<case-id>/references/`.
-4. Run the app against the source document.
+3. Run the app against the source document.
+4. Save the generated output in the case folder if you want to keep it.
 5. Compare the generated summary and next steps against the rubric.
 
 ## Folder Layout
