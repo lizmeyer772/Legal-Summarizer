@@ -4,9 +4,7 @@ export default function App() {
   const [file, setFile] = useState(null);
   const [summary, setSummary] = useState('');
   const [nextSteps, setNextSteps] = useState('');
-  const [relatedCases, setRelatedCases] = useState([]);
   const [isSummarizing, setIsSummarizing] = useState(false);
-  const [isLoadingCases, setIsLoadingCases] = useState(false);
   const [error, setError] = useState('');
 
   const canProcess = useMemo(() => Boolean(file), [file]);
@@ -16,7 +14,6 @@ export default function App() {
     setFile(selectedFile);
     setSummary('');
     setNextSteps('');
-    setRelatedCases([]);
     setError('');
   };
 
@@ -28,20 +25,15 @@ export default function App() {
 
     setError('');
     setIsSummarizing(true);
-    setIsLoadingCases(true);
 
     try {
       const llmResult = await summarizeDocument(file);
       setSummary(llmResult.summary);
       setNextSteps(llmResult.nextSteps);
-
-      const casesResult = await findRelatedCases(file, llmResult.summary);
-      setRelatedCases(casesResult);
     } catch (err) {
       setError(err.message || 'Something went wrong while processing the document.');
     } finally {
       setIsSummarizing(false);
-      setIsLoadingCases(false);
     }
   };
 
@@ -50,13 +42,13 @@ export default function App() {
       <header className="app-header">
         <span className="eyebrow">Attorney Workflow Assistant</span>
         <h1>Legal Document Summarizer</h1>
-        <p>Upload a document, generate an LLM summary, and review related cases.</p>
+        <p>Upload a document, generate an LLM summary, and review practical attorney follow-up guidance.</p>
       </header>
 
-      <main className="grid-layout">
-        <section className="panel">
+      <main className="app-layout">
+        <section className="panel upload-panel">
           <h2>1. Upload Legal Document</h2>
-          <p className="panel-intro">Accepted now as a local file input. TODO: wire to backend file storage if needed.</p>
+          <p className="panel-intro">Upload a complaint or other legal document, then run the analysis.</p>
 
           <label className="file-input-label" htmlFor="legalDoc">
             Select file
@@ -70,52 +62,33 @@ export default function App() {
           </button>
         </section>
 
-        <section className="panel">
+        <section className="panel output-panel">
           <h2>2. LLM Output</h2>
           <p className="panel-intro">Summary and practical follow-up guidance for attorney review.</p>
 
-          <div className="result-box">
-            <h3>Summary</h3>
-            {isSummarizing ? (
-              <p>Generating summary...</p>
-            ) : summary ? (
-              <StructuredOutput text={summary} />
-            ) : (
-              <p className="placeholder">Placeholder: summary from LLM will be shown here.</p>
-            )}
+          <div className="output-grid">
+            <div className="result-box">
+              <h3>Summary</h3>
+              {isSummarizing ? (
+                <p>Generating summary...</p>
+              ) : summary ? (
+                <StructuredOutput text={summary} />
+              ) : (
+                <p className="placeholder">Placeholder: summary from LLM will be shown here.</p>
+              )}
+            </div>
+
+            <div className="result-box">
+              <h3>Attorney Next Steps / Questions</h3>
+              {isSummarizing ? (
+                <p>Generating next steps...</p>
+              ) : nextSteps ? (
+                <StructuredOutput text={nextSteps} />
+              ) : (
+                <p className="placeholder">Placeholder: next steps and follow-up questions will be shown here.</p>
+              )}
+            </div>
           </div>
-
-          <div className="result-box">
-            <h3>Attorney Next Steps / Questions</h3>
-            {isSummarizing ? (
-              <p>Generating next steps...</p>
-            ) : nextSteps ? (
-              <StructuredOutput text={nextSteps} />
-            ) : (
-              <p className="placeholder">Placeholder: next steps and follow-up questions will be shown here.</p>
-            )}
-          </div>
-        </section>
-
-        <section className="panel">
-          <h2>3. Related Cases (Courtbase API)</h2>
-          <p className="panel-intro">Placeholder list below. TODO: replace with live Courtbase API response mapping.</p>
-
-          {isLoadingCases ? <p>Searching for related cases...</p> : null}
-
-          {!isLoadingCases && relatedCases.length === 0 ? (
-            <p className="placeholder">No related cases yet. Results will appear here after API integration.</p>
-          ) : null}
-
-          <ul className="cases-list">
-            {relatedCases.map((caseItem) => (
-              <li key={caseItem.id} className="case-item">
-                <strong>{caseItem.caseName}</strong>
-                <span>{caseItem.citation}</span>
-                <p>{caseItem.reason}</p>
-              </li>
-            ))}
-          </ul>
         </section>
       </main>
 
@@ -219,27 +192,4 @@ async function summarizeDocument(file) {
     summary: data.summary ?? '',
     nextSteps: data.next_steps ?? ''
   };
-}
-
-async function findRelatedCases(file, summaryText) {
-  const response = await fetch('/api/v1/analysis/related-cases', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      file_name: file.name,
-      summary: summaryText
-    })
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to load related cases.');
-  }
-
-  const data = await response.json();
-  return (data.cases ?? []).map((item) => ({
-    id: item.id,
-    caseName: item.case_name,
-    citation: item.citation,
-    reason: item.reason
-  }));
 }

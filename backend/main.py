@@ -1,10 +1,8 @@
 # needed libraries
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from courtbase import get_related_cases
 from document_processing import extract_document_text
 from llm import generate_attorney_next_steps, generate_summary
-from schemas import RelatedCasesRequest
 
 
 app = FastAPI(title='Legal Summarizer API', version='0.1.0')
@@ -32,10 +30,3 @@ def summarize_document(file: UploadFile = File(...)):
     summary = generate_summary(file.filename, document_text)
     next_steps = generate_attorney_next_steps(file.filename, summary)
     return {'summary': summary, 'next_steps': next_steps}
-
-
-@app.post('/api/v1/analysis/related-cases')
-def related_cases(payload: RelatedCasesRequest):
-    # leave for later
-    cases = get_related_cases(payload.file_name, payload.summary)
-    return {'cases': cases}

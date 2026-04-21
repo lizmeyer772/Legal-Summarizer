@@ -27,9 +27,9 @@ body {
 }
 
 .app-shell {
-  max-width: 1120px;
+  max-width: 1460px;
   margin: 0 auto;
-  padding: 2.25rem 1.1rem 3rem;
+  padding: 2.25rem 1.35rem 3rem;
 }
 
 .app-header {
@@ -69,11 +69,11 @@ body {
   line-height: 1.5;
 }
 
-.grid-layout {
+.app-layout {
   margin-top: 1.25rem;
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
 }
 
 .panel {
@@ -84,6 +84,23 @@ body {
   padding: 1.1rem;
   box-shadow: 0 14px 28px rgba(18, 41, 69, 0.06);
   animation: rise-in 0.42s ease-out both;
+}
+
+.upload-panel {
+  align-self: start;
+  position: sticky;
+  top: 1rem;
+}
+
+.output-panel {
+  min-width: 0;
+}
+
+.output-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: start;
 }
 
 .panel h2 {
@@ -150,11 +167,11 @@ button:disabled {
 }
 
 .result-box {
-  margin-bottom: 0.85rem;
   border: 1px solid #e1e6ef;
   border-radius: 12px;
-  padding: 0.85rem;
+  padding: 1rem;
   background: var(--surface-muted);
+  min-height: 100%;
 }
 
 .result-box h3 {
@@ -219,35 +236,6 @@ button:disabled {
   margin-top: 0;
 }
 
-.cases-list {
-  list-style: none;
-  margin: 0.25rem 0 0;
-  padding: 0;
-}
-
-.case-item {
-  border: 1px solid #d7dfeb;
-  border-radius: 12px;
-  margin-top: 0.7rem;
-  padding: 0.8rem;
-  background: #ffffff;
-}
-
-.case-item strong {
-  font-size: 0.96rem;
-}
-
-.case-item span {
-  display: block;
-  color: var(--text-muted);
-  margin-top: 0.2rem;
-  font-size: 0.92rem;
-}
-
-.case-item p {
-  margin: 0.5rem 0 0;
-}
-
 .error-message {
   color: var(--danger);
   margin-top: 0.9rem;
@@ -278,7 +266,15 @@ button:disabled {
     padding: 1.05rem;
   }
 
-  .grid-layout {
+  .app-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .upload-panel {
+    position: static;
+  }
+
+  .output-grid {
     grid-template-columns: 1fr;
   }
 }
