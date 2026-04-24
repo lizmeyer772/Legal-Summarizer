@@ -1,6 +1,6 @@
 # Generated Output
 
-## Summary
+# Summary
 
 ## Executive Summary
 
@@ -15,7 +15,7 @@ including firearms, ammunition, and methamphetamine.
 
 -Plaintiff: United States of America
 -Defendant: Alfonso Romero
--Procedural posture: Civil complaint filed.
+-Procedural posture: Criminal complaint filed.
 
 ## Context / Background
 
@@ -43,7 +43,7 @@ owning firearms.
 Sr., has any involvement in the case beyond stating his son resides
 in the Rear Unit.
 
-## Attorney Next Steps / Questions
+# Attorney Next Steps / Questions
 
 ## Evidence / Records Requests
 

@@ -1,6 +1,6 @@
 # Generated Output
 
-## Summary
+# Summary
 
 ## Executive Summary
 
@@ -56,7 +56,7 @@ fees, pursuant to the Equal Access to Justice Act (28 U.S.C. 2412(d)
 
 ## Missing Facts
 
-## Attorney Next Steps / Questions
+# Attorney Next Steps / Questions
 
 ## Evidence / Records Requests
 

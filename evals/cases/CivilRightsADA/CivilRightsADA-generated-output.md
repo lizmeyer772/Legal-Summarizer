@@ -1,6 +1,6 @@
 # Generated Output
 
-## Summary
+# Summary
 
 ## Executive Summary
 
@@ -46,7 +46,7 @@ Equal" Enjoyment and Use
 
 ## Deadlines and Time Sensitive Items
 
--Not specified in provided text
+-Not specified in provided text.
 
 ## Missing Facts
 
@@ -55,7 +55,7 @@ the barriers.
 -Unclear from provided text whether Defendants have made any efforts
 to modify the facility to make it accessible.
 
-## Attorney Next Steps / Questions
+# Attorney Next Steps / Questions
 
 ## Evidence / Records Requests
 
