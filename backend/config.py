@@ -11,3 +11,4 @@ _legacy_hf_base_url = os.getenv('HF_INFERENCE_BASE_URL', '').strip()
 HF_CHAT_COMPLETIONS_URL = os.getenv('HF_CHAT_COMPLETIONS_URL', '').strip() or 'https://router.huggingface.co/v1/chat/completions'
 if not os.getenv('HF_CHAT_COMPLETIONS_URL') and _legacy_hf_base_url:
     HF_CHAT_COMPLETIONS_URL = 'https://router.huggingface.co/v1/chat/completions'
+
