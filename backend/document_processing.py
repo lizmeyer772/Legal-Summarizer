@@ -5,7 +5,7 @@ from docx import Document
 from fastapi import UploadFile
 from pypdf import PdfReader
 
-
+# document processing workflow
 def extract_document_text(uploaded_file: UploadFile) -> str:
     # supports .txt, .pdf, and .docx
     content = uploaded_file.file.read()

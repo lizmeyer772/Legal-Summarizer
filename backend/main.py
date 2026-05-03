@@ -24,7 +24,7 @@ def health_check():
 
 @app.post('/api/v1/analysis/summarize')
 
-
+# summarize document to feed into llm
 def summarize_document(file: UploadFile = File(...)):
     document_text = extract_document_text(file)
     summary = generate_summary(file.filename, document_text)

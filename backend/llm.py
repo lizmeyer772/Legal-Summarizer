@@ -3,9 +3,8 @@ import re
 
 from config import HF_API_TOKEN, HF_CHAT_COMPLETIONS_URL, HF_MODEL_ID
 
-# add chunking maybe, how?
+# Prompt 1 (zero-shot)
 def generate_summary(file_name: str, document_text: str) -> str:
-    # need to update these prompts
     prompt = f"""
 You are assisting counsel who has received this legal document for review.
 Assume the reader is analyzing the document after it was filed or served, not drafting it.
@@ -118,9 +117,8 @@ DOCUMENT:
         'timelines, and potential legal exposure requiring attorney review.'
     )
 
-
+# Prompt 2
 def generate_attorney_next_steps(file_name: str, summary: str) -> str:
-    # need to update these prompts
     prompt = f"""
 You are assisting counsel who has received this legal document for review.
 Assume the reader is analyzing the document after it was filed or served, not drafting it.
@@ -209,7 +207,7 @@ SUMMARY:
         'and prepare follow-up questions for the client on disputed obligations.'
     )
 
-
+# hugging face prompt and error handling
 def call_huggingface(prompt: str) -> str:
 
     if not HF_API_TOKEN:
@@ -245,7 +243,7 @@ def call_huggingface(prompt: str) -> str:
 
     return ''
 
-
+# markdown help
 def normalize_summary_markdown(text: str) -> str:
     lines = text.splitlines()
     normalized_lines = []
